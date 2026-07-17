@@ -126,50 +126,104 @@ p,li{font-size:21px;line-height:1.6;color:var(--ink2)}
 .pen-title{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dg);letter-spacing:.1em;margin-bottom:8px}
 
 /* ─────────────────────────────
-   PRINT / PDF
+   PRINT / PDF  (省碳淺色版)
 ───────────────────────────── */
 @media print{
-  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  @page{size:A4 landscape;margin:0}
-  html,body{overflow:visible;height:auto;width:100%;background:var(--bg)}
+  @page{size:A4 landscape;margin:10mm}
+
+  /* 覆寫色票 → 白底深字 */
+  :root{
+    --bg:#ffffff;--bg2:#f4f4f4;--bg3:#eaeaea;
+    --ink:#111111;--ink2:#333333;--ink3:#666666;--ink4:#999999;
+    --c:#005f8a;--c2:#b84000;--warn:#9c6000;--dg:#b31030;--ok:#006633;
+  }
+
+  html,body{overflow:visible;height:auto;width:100%;background:#fff;color:#111}
   #bar,#tag,#pg,#hint,#print-btn{display:none!important}
   #deck{position:static;height:auto;overflow:visible}
+
   .s{
     position:relative!important;
     opacity:1!important;
     transform:none!important;
     pointer-events:auto!important;
     display:flex!important;
-    width:297mm;height:210mm;
-    padding:14mm 18mm 12mm;
+    width:277mm;height:190mm; /* 297/210 - 2×10mm margin */
+    padding:6mm 10mm;
     break-after:page;
     page-break-after:always;
     overflow:hidden;
     box-sizing:border-box;
+    background:#fff;
   }
   .s:last-child{break-after:avoid;page-break-after:avoid}
-  /* Print watermark with slide number */
+
+  /* 頁碼 */
   .s::after{
     content:attr(data-s) " / 21";
     position:absolute;
-    bottom:8mm;right:12mm;
+    bottom:4mm;right:8mm;
     font-family:'JetBrains Mono',monospace;
-    font-size:10px;
-    color:rgba(184,197,224,.5);
+    font-size:9px;color:#aaa;
   }
-  /* Keep section label for print */
+  /* 章節標籤 */
   .s::before{
     content:attr(data-sec);
     position:absolute;
-    top:8mm;left:12mm;
+    top:4mm;left:8mm;
     font-family:'JetBrains Mono',monospace;
-    font-size:10px;
-    color:rgba(0,212,255,.7);
-    letter-spacing:.1em;
+    font-size:9px;color:var(--c);letter-spacing:.1em;
   }
-  /* Keep interactive quiz readable in print */
-  .qcard{break-inside:avoid}
-  .qans{display:block!important;opacity:.7}
+
+  /* 背景裝飾全部清掉 */
+  .cbg,.dbg,.rbg{display:none!important}
+
+  /* 玻璃卡片 → 淺灰底＋細邊框 */
+  .gl{background:#f7f7f7!important;border-color:#ccc!important;backdrop-filter:none!important}
+  .gl-c{background:#f0f8ff!important;border-color:#005f8a!important}
+  .gl-d{background:#fff4f5!important;border-color:#b31030!important}
+  .gl-w{background:#fffbf0!important;border-color:#9c6000!important}
+  .gl-ok{background:#f0fff5!important;border-color:#006633!important}
+  .gl-o{background:#fff6f0!important;border-color:#b84000!important}
+
+  /* 懲罰卡 */
+  .pen{background:#fff4f5!important;border-color:#b31030!important}
+
+  /* 病原體卡 */
+  .pc1,.pc2,.pc3,.pc4{background:#f7f7f7!important;border:1px solid #ccc!important;transform:none!important}
+
+  /* 流程步驟 */
+  .fst{background:#f4f4f4!important;border-color:#bbb!important;color:#222!important}
+  .fst.bad{background:#fff4f5!important;border-color:#b31030!important;color:#b31030!important}
+  .fst.res{background:#fffbf0!important;border-color:#9c6000!important;color:#9c6000!important}
+  .fst.ok{background:#f0fff5!important;border-color:#006633!important;color:#006633!important}
+  .farr{color:#005f8a!important}
+
+  /* 表格 */
+  .tbl th{border-bottom-color:#aaa!important}
+  .tbl td{border-bottom-color:#ddd!important}
+  .tbl tr:hover td{background:none!important}
+
+  /* 色票 chip → 只保留文字顏色，白底邊框 */
+  .chip{background:#f4f4f4!important}
+  .chc{border-color:#005f8a!important;color:#005f8a!important}
+  .chd{border-color:#b31030!important;color:#b31030!important}
+  .chw{border-color:#9c6000!important;color:#9c6000!important}
+  .chg{border-color:#006633!important;color:#006633!important}
+  .cho{border-color:#b84000!important;color:#b84000!important}
+
+  /* 測驗卡 */
+  .qcard{break-inside:avoid;background:#f7f7f7!important;border-color:#ccc!important}
+  .qcard:hover{background:#f7f7f7!important}
+  .qans{display:block!important}
+  .qans.ok-ans{background:#f0fff5!important;border-color:#006633!important;color:#006633!important}
+  .qans.ng-ans{background:#fff4f5!important;border-color:#b31030!important;color:#b31030!important}
+
+  /* 砧板色塊保留顏色（辨識用），但不印底色 */
+  [style*="background:rgba(255,68,102"]{background:transparent!important;border-width:2px!important}
+  [style*="background:rgba(255,220,0"]{background:transparent!important;border-width:2px!important}
+  [style*="background:rgba(0,180,255"]{background:transparent!important;border-width:2px!important}
+  [style*="background:rgba(0,200,100"]{background:transparent!important;border-width:2px!important}
 }
 </style>
 </head>
